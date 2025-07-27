@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinemoSHΞN™</title>
+    <style>
+        /* تنظیمات کلی صفحه برای حذف حاشیه و اسکرول */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000; /* پس‌زمینه سیاه برای جلوگیری از فلاش سفید قبل از بارگذاری ویدیو */
+        }
+
+        /* استایل پخش کننده ویدیو برای پوشش کامل صفحه */
+        #videoPlayer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* ویدیو را بدون برش و با حفظ نسبت ابعاد نمایش می‌دهد. برای پوشش کامل از 'cover' استفاده کنید. */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 
+      تگ ویدیو که پلیر ما خواهد بود.
+      - autoplay: باعث پخش خودکار ویدیو می‌شود.
+      - controls: کنترل‌های پخش (مثل مکث و صدا) را نمایش می‌دهد.
+      - playsinline: برای پخش صحیح در مرورگرهای موبایل (به‌خصوص iOS).
+      - loop: باعث تکرار ویدیو پس از اتمام می‌شود.
+    -->
+    <video id="videoPlayer" autoplay controls playsinline loop>
+        <!-- مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند. -->
+    </video>
+
+    <script>
+        // المنت ویدیو را از صفحه بگیرید
+        const videoPlayer = document.getElementById('videoPlayer');
+
+        // --- لینک ویدیوی خود را اینجا قرار دهید ---
+        const videoUrl = "http://sv2.downloadyarbot.ir/IDM/video-2025-07-27_14-54-02.mp4";
+        // -----------------------------------------
+
+        // هنگام بارگذاری کامل صفحه، این کد اجرا می‌شود
+        document.addEventListener('DOMContentLoaded', () => {
+            // منبع ویدیو را تنظیم کنید
+            videoPlayer.src = videoUrl;
+
+            // تلاش برای پخش ویدیو
+            // این کار برای اطمینان از پخش در مرورگرهایی است که ممکن است با autoplay مشکل داشته باشند
+            const playPromise = videoPlayer.play();
+
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // اگر پخش خودکار با خطا مواجه شد (مثلاً به دلیل محدودیت‌های مرورگر)
+                    console.error("خطا در پخش خودکار ویدیو:", error);
+                    // در این حالت، معمولاً کنترل‌های ویدیو نمایش داده می‌شود تا کاربر خودش پخش را شروع کند.
+                });
+            }
+        });
+
+        // برای اطمینان از اینکه ویدیو همیشه در حالت پخش است (اختیاری)
+        // اگر ویدیو به هر دلیلی متوقف شد، دوباره پخشش کن
+        videoPlayer.addEventListener('pause', () => {
+            // videoPlayer.play(); // این خط را از کامنت خارج کنید اگر می‌خواهید کاربر نتواند ویدیو را متوقف کند
+        });
+
+    </script>
+
+</body>
+</html>
+
